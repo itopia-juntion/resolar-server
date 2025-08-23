@@ -18,7 +18,7 @@ public record AnalyzeRequest(
         String content,
 
         @JsonProperty("timestamp")
-        LocalDateTime timestamp,
+        String timestamp,
 
         @JsonProperty("id")
         long id

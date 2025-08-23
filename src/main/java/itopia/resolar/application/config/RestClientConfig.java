@@ -12,7 +12,7 @@ public class RestClientConfig {
 
     @Bean
     public RestClient restClient(
-            @Value("${ai.service.url:https://37703b8a36c1.ngrok-free.app}") String baseUrl) {
+            @Value("${ai.service.url}") String baseUrl) {
         return RestClient.builder()
                 .baseUrl(baseUrl)
                 .build();
