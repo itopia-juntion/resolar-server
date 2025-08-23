@@ -1,5 +1,6 @@
 package itopia.resolar.domain.subject;
 
+import itopia.resolar.domain.page.dto.PageResponse;
 import itopia.resolar.domain.subject.dto.SubjectResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

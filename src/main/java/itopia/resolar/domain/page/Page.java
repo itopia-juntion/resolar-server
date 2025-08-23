@@ -1,10 +1,9 @@
 package itopia.resolar.domain.page;
 
 import itopia.resolar.application.common.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import itopia.resolar.domain.subject.Subject;
+import itopia.resolar.domain.user.User;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,4 +22,10 @@ public class Page extends BaseEntity {
     private String url;
     private String summary;
     private int importance;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Subject subject;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 }
