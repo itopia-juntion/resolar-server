@@ -25,6 +25,7 @@ public class User {
     private String email;
 
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private Role role = Role.USER;
 
     public enum Role {

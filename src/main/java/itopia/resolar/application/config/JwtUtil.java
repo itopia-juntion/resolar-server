@@ -21,12 +21,13 @@ public class JwtUtil {
         this.accessTokenValidityInMilliseconds = accessTokenValidityInMilliseconds;
     }
 
-    public String createAccessToken(String username) {
+    public String createAccessToken(String username, Long userId) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + accessTokenValidityInMilliseconds);
 
         return Jwts.builder()
                 .subject(username)
+                .claim("userId", userId)
                 .issuedAt(now)
                 .expiration(validity)
                 .signWith(key)
@@ -35,6 +36,10 @@ public class JwtUtil {
 
     public String getUsernameFromToken(String token) {
         return getClaims(token).getSubject();
+    }
+
+    public Long getUserIdFromToken(String token) {
+        return getClaims(token).get("userId", Long.class);
     }
 
     public boolean validateToken(String token) {

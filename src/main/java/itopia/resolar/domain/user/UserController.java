@@ -14,9 +14,9 @@ public class UserController {
     
     private final UserService userService;
 
-    @PostMapping("/signup")
+    @PostMapping("/join")
     public ResponseEntity<AuthResponse> signup(@RequestBody SignupRequest request) {
-        AuthResponse response = userService.signup(request);
+        AuthResponse response = userService.join(request);
         return ResponseEntity.ok(response);
     }
 

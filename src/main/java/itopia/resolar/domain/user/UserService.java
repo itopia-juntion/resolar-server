@@ -20,7 +20,7 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    public AuthResponse signup(SignupRequest request) {
+    public AuthResponse join(SignupRequest request) {
         if (userRepository.existsByUsername(request.username())) {
             throw new RuntimeException("이미 존재하는 사용자명입니다");
         }
@@ -37,7 +37,7 @@ public class UserService implements UserDetailsService {
                 .build();
 
         User savedUser = userRepository.save(user);
-        String accessToken = jwtUtil.createAccessToken(savedUser.getUsername());
+        String accessToken = jwtUtil.createAccessToken(savedUser.getUsername(), savedUser.getId());
 
         return new AuthResponse(accessToken, savedUser.getUsername(), savedUser.getEmail());
     }
@@ -50,7 +50,7 @@ public class UserService implements UserDetailsService {
             throw new RuntimeException("잘못된 비밀번호입니다");
         }
 
-        String accessToken = jwtUtil.createAccessToken(user.getUsername());
+        String accessToken = jwtUtil.createAccessToken(user.getUsername(), user.getId());
         return new AuthResponse(accessToken, user.getUsername(), user.getEmail());
     }
 
