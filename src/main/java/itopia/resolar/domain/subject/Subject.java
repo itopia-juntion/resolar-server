@@ -1,9 +1,7 @@
 package itopia.resolar.domain.subject;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import itopia.resolar.domain.user.User;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,4 +17,7 @@ public class Subject {
     private long id;
 
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 }
