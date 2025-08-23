@@ -1,6 +1,6 @@
 package itopia.resolar.domain.subject;
 
-import itopia.resolar.application.util.SecurityUtil;
+import itopia.resolar.application.security.SecurityUtil;
 import itopia.resolar.domain.subject.dto.SubjectResponse;
 import itopia.resolar.domain.user.User;
 import itopia.resolar.domain.user.UserRepository;

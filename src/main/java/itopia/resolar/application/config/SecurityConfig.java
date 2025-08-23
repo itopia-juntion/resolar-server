@@ -1,5 +1,6 @@
 package itopia.resolar.application.config;
 
+import itopia.resolar.application.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

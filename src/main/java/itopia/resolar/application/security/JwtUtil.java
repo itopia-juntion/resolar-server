@@ -1,4 +1,4 @@
-package itopia.resolar.application.config;
+package itopia.resolar.application.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

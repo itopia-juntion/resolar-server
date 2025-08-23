@@ -1,21 +1,16 @@
 package itopia.resolar.domain.user;
 
-import itopia.resolar.application.config.JwtUtil;
+import itopia.resolar.application.security.JwtUtil;
 import itopia.resolar.domain.user.dto.AuthRequest;
 import itopia.resolar.domain.user.dto.AuthResponse;
 import itopia.resolar.domain.user.dto.SignupRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
+public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
@@ -24,7 +19,7 @@ public class UserService implements UserDetailsService {
         if (userRepository.existsByUsername(request.username())) {
             throw new RuntimeException("이미 존재하는 사용자명입니다");
         }
-        
+
         if (userRepository.existsByEmail(request.email())) {
             throw new RuntimeException("이미 존재하는 이메일입니다");
         }
@@ -52,17 +47,5 @@ public class UserService implements UserDetailsService {
 
         String accessToken = jwtUtil.createAccessToken(user.getUsername(), user.getId());
         return new AuthResponse(accessToken, user.getUsername(), user.getEmail());
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + username));
-
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                new ArrayList<>()
-        );
     }
 }
