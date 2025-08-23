@@ -12,7 +12,7 @@ public record SearchRequest(
         @JsonProperty("limit")
         int limit,
 
-        @JsonProperty("userId")
+        @JsonProperty("user_id")
         long userId
 ) {
 }

@@ -12,6 +12,9 @@ public record PageResponse(
         
         @Schema(description = "페이지 URL", example = "https://spring.io/guides/gs/rest-service/")
         String url,
+
+        @Schema(description = "페이지 제목", example = "밤샘은 위험해")
+        String title,
         
         @Schema(description = "페이지 요약", example = "Spring Boot RESTful 웹 서비스 구축 가이드")
         String summary,
@@ -32,6 +35,7 @@ public record PageResponse(
         return new PageResponse(
                 page.getId(),
                 page.getUrl(),
+                page.getTitle(),
                 page.getSummary(),
                 page.getImportance(),
                 page.getSubject().getId(),

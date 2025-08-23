@@ -57,7 +57,6 @@ public class PageController {
             @RequestParam String keyword,
             @Parameter(description = "과목 ID (선택사항)", example = "1")
             @RequestParam(required = false) Long subjectId) {
-        
         List<PageResponse> pages;
         if (subjectId != null) {
             pages = pageService.searchPagesByKeywordAndSubject(keyword, subjectId);

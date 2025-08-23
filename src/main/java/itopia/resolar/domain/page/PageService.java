@@ -44,6 +44,7 @@ public class PageService {
 
         Page page = Page.builder()
                 .url(request.url())
+                .title(request.title())
                 .subject(subject)
                 .user(currentUser)
                 .build();
@@ -92,6 +93,7 @@ public class PageService {
 
         Page page = Page.builder()
                 .url(request.url())
+                .title(request.title())
                 .summary(content.toString())
                 .user(currentUser)
                 .subject(subject)
@@ -119,6 +121,7 @@ public class PageService {
         Page page = Page.builder()
                 .url(request.url())
                 .subject(subject)
+                .title(request.title())
                 .user(currentUser)
                 .build();
 
@@ -161,7 +164,7 @@ public class PageService {
             throw new RuntimeException("해당 과목에 접근할 권한이 없습니다");
         }
 
-        return pageRepository.findAllBySubjectIdAndUserId(subjectId, currentUserId)
+        return pageRepository.findAllBySubjectIdAndUserIdOrderByIdDesc(subjectId, currentUserId)
                 .stream()
                 .map(PageResponse::from)
                 .toList();

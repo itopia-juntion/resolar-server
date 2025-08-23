@@ -21,7 +21,7 @@ public record AnalyzeRequest(
         @JsonProperty("id")
         long id,
 
-        @JsonProperty("userId")
+        @JsonProperty("user_id")
         long userId
 ) {
 }

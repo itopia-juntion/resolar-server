@@ -21,6 +21,7 @@ public class Page extends BaseEntity {
 
     private String url;
     private String summary;
+    private String title;
     private double importance;
 
     @ManyToOne(fetch = FetchType.LAZY)
