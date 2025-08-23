@@ -27,10 +27,10 @@ public class SubjectController {
 
     @PostMapping
     @Operation(summary = "주제 생성", description = "새로운 주제를 생성합니다. 현재 로그인한 사용자에게 연결됩니다.")
-    @ApiResponse(responseCode = "201", description = "과목 생성 성공", useReturnTypeSchema = true)
-    public ResponseEntity<Void> createSubject(@Valid @RequestBody SubjectCreateRequest request) {
+    @ApiResponse(responseCode = "200", description = "과목 생성 성공", useReturnTypeSchema = true)
+    public ResponseEntity<String> createSubject(@Valid @RequestBody SubjectCreateRequest request) {
         subjectService.createSubject(request.name());
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.ok(request.name());
     }
 
     @GetMapping("search")
@@ -48,11 +48,11 @@ public class SubjectController {
     @ApiResponse(responseCode = "200", description = "PDF 생성 성공")
     public ResponseEntity<byte[]> summarySubject(@PathVariable long subjectId) {
         byte[] pdfBytes = subjectService.summarizeSubject(subjectId);
-        
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDispositionFormData("attachment", "subject-summary-" + subjectId + ".pdf");
-        
+
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(pdfBytes);
@@ -64,5 +64,12 @@ public class SubjectController {
     public ResponseEntity<List<SubjectResponse>> readByUser() {
         List<SubjectResponse> subjects = subjectService.readAllByUserId();
         return ResponseEntity.ok(subjects);
+    }
+
+    @DeleteMapping("{subjectId}")
+    @Operation(summary = "주제 삭제")
+    public ResponseEntity<Void> deleteSubject(@PathVariable long subjectId) {
+        subjectService.deleteSubject(subjectId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

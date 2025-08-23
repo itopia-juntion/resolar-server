@@ -52,7 +52,7 @@ public class SubjectService {
                 .orElseThrow(() -> new RuntimeException("해당 주제를 찾을 수 없습니다."));
 
         List<Page> pages = pageRepository.findAllBySubjectIdAndUserIdOrderByIdDesc(subjectId, userId);
-        
+
         if (pages.isEmpty()) {
             throw new RuntimeException("해당 주제에 저장된 페이지가 없습니다.");
         }
@@ -60,7 +60,7 @@ public class SubjectService {
         try {
             SummarizeSubjectRequest request = new SummarizeSubjectRequest(subject.getName(), userId);
             SummarizeSubjectResponse response = aiAnalysisClient.summarizeSubject(request);
-            
+
             return pdfService.generateSubjectReportPdf(subject.getName(), response);
         } catch (Exception e) {
             throw new RuntimeException("주제 요약 PDF 생성 중 오류가 발생했습니다: " + e.getMessage());
@@ -91,4 +91,10 @@ public class SubjectService {
                 .toList();
     }
 
+    public void deleteSubject(long subjectId) {
+        long userId = SecurityUtil.getCurrentUserId();
+        Subject subject = subjectRepository.findByIdAndUserId(subjectId, userId)
+                .orElseThrow(() -> new RuntimeException("해당 주제가 없습니다."));
+        subjectRepository.delete(subject);
+    }
 }
