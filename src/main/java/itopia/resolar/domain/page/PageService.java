@@ -57,7 +57,8 @@ public class PageService {
                     request.url(),
                     request.content(),
                     java.time.LocalDateTime.now().toString(),
-                    savedPage.getId()
+                    savedPage.getId(),
+                    currentUserId
             );
             AnalyzeResponse aiResponse = aiAnalysisClient.analyzeContent(analyzeRequest);
 
@@ -136,7 +137,8 @@ public class PageService {
                     request.url(),
                     content.toString(),
                     java.time.LocalDateTime.now().toString(),
-                    savedPage.getId()
+                    savedPage.getId(),
+                    currentUserId
             );
             AnalyzeResponse aiResponse = aiAnalysisClient.analyzeContent(analyzeRequest);
 

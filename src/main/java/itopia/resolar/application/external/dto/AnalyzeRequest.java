@@ -2,8 +2,6 @@ package itopia.resolar.application.external.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.LocalDateTime;
-
 public record AnalyzeRequest(
         @JsonProperty("subject")
         String subject,
@@ -21,6 +19,9 @@ public record AnalyzeRequest(
         String timestamp,
 
         @JsonProperty("id")
-        long id
+        long id,
+
+        @JsonProperty("userId")
+        long userId
 ) {
 }
