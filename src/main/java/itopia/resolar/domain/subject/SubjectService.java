@@ -51,7 +51,7 @@ public class SubjectService {
         Subject subject = subjectRepository.findByIdAndUserId(subjectId, userId)
                 .orElseThrow(() -> new RuntimeException("해당 주제를 찾을 수 없습니다."));
 
-        List<Page> pages = pageRepository.findAllBySubjectIdAndUserId(subjectId, userId);
+        List<Page> pages = pageRepository.findAllBySubjectIdAndUserIdOrderByIdDesc(subjectId, userId);
         
         if (pages.isEmpty()) {
             throw new RuntimeException("해당 주제에 저장된 페이지가 없습니다.");
