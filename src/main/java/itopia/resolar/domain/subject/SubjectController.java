@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import itopia.resolar.domain.page.dto.PageResponse;
 import itopia.resolar.domain.subject.dto.SubjectCreateRequest;
 import itopia.resolar.domain.subject.dto.SubjectResponse;
 import jakarta.validation.Valid;
@@ -31,12 +32,13 @@ public class SubjectController {
     }
 
     @GetMapping("search")
-    @Operation(summary = "아티클 검색(미완)", description = "키워드를 사용해 유사한 내용의 아티클을 검색합니다.")
-    public ResponseEntity<?> search(
+    @Operation(summary = "ai를 사용한 아티클 검색", description = "키워드를 사용해 유사한 내용의 아티클을 검색합니다.")
+    public ResponseEntity<PageResponse> search(
             @RequestParam String keyword,
             @RequestParam long subjectId
     ) {
-        return ResponseEntity.ok(null);
+        PageResponse response = subjectService.searchByKeyword(keyword, subjectId);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("summary/{subjectId}")
