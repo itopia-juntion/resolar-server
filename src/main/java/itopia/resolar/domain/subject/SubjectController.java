@@ -30,20 +30,21 @@ public class SubjectController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-//    @GetMapping("search")
-//    @Operation(summary = "주제 생성", description = "새로운 주제를 생성합니다. 현재 로그인한 사용자에게 연결됩니다.")
-//    public ResponseEntity<?> search(
-//            @RequestParam String keyword,
-//            @RequestParam long subjectId
-//    ) {
-//
-//    }
+    @GetMapping("search")
+    @Operation(summary = "아티클 검색", description = "키워드를 사용해 유사한 내용의 아티클을 검색합니다.")
+    public ResponseEntity<?> search(
+            @RequestParam String keyword,
+            @RequestParam long subjectId
+    ) {
+        return ResponseEntity.ok(null);
+    }
 
-//    @PostMapping("summary/{subjectId}")
-//    @Operation(summary = "탐색된 자료들 정리", description = "탐색한 자료들을 요약, 정리합니다.")
-//    public ResponseEntity<?> summarySubject() {
+    @PostMapping("summary/{subjectId}")
+    @Operation(summary = "탐색된 자료들 정리", description = "탐색한 자료들을 요약, 정리합니다.")
+    public ResponseEntity<?> summarySubject() {
 //subjectService.createSubject()
-//    }
+        return ResponseEntity.ok(null);
+    }
 
     @GetMapping
     @Operation(summary = "내 주제 목록 조회", description = "현재 로그인한 사용자의 모든 주제를 조회합니다.")

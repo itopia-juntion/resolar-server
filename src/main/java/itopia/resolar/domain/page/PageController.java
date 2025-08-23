@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import itopia.resolar.domain.page.dto.HighlightPageCreateRequest;
 import itopia.resolar.domain.page.dto.PageCreateRequest;
 import itopia.resolar.domain.page.dto.PageResponse;
 import jakarta.validation.Valid;
@@ -28,6 +29,14 @@ public class PageController {
     @ApiResponse(responseCode = "201", description = "페이지 생성 성공", useReturnTypeSchema = true)
     public ResponseEntity<PageResponse> createPage(@Valid @RequestBody PageCreateRequest request) {
         PageResponse response = pageService.createPage(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("highlight")
+    @Operation(summary = "요약 페이지 생성", description = "새로운 하이라이트 페이지를 생성합니다. 하이라이트를 요약으로 활용한 페이지를 생성합니다.")
+    @ApiResponse(responseCode = "201", description = "페이지 생성 성공", useReturnTypeSchema = true)
+    public ResponseEntity<PageResponse> createHighlightPage(@Valid @RequestBody HighlightPageCreateRequest request) {
+        PageResponse response = pageService.createHighlightPage(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

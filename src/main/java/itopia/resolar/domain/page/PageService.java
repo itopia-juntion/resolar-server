@@ -4,6 +4,7 @@ import itopia.resolar.application.external.AiAnalysisClient;
 import itopia.resolar.application.external.dto.AnalyzeRequest;
 import itopia.resolar.application.external.dto.AnalyzeResponse;
 import itopia.resolar.application.security.SecurityUtil;
+import itopia.resolar.domain.page.dto.HighlightPageCreateRequest;
 import itopia.resolar.domain.page.dto.PageCreateRequest;
 import itopia.resolar.domain.page.dto.PageResponse;
 import itopia.resolar.domain.subject.Subject;
@@ -65,6 +66,37 @@ public class PageService {
         } catch (Exception e) {
             throw new RuntimeException("페이지 생성 중 오류가 발생했습니다: " + e.getMessage());
         }
+    }
+
+    public PageResponse createHighlightPage(HighlightPageCreateRequest request) {
+        long currentUserId = SecurityUtil.getCurrentUserId();
+
+        Subject subject = subjectRepository.findById(request.subjectId())
+                .orElseThrow(() -> new RuntimeException("주제를 찾을 수 없습니다"));
+
+        if (!subject.getUser().getId().equals(currentUserId)) {
+            throw new RuntimeException("해당 주제에 접근할 권한이 없습니다");
+        }
+
+        User currentUser = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다"));
+
+        StringBuilder content = new StringBuilder();
+        for (String highlight : request.highlights()) {
+            content.append(highlight);
+            content.append("\n");
+        }
+
+        Page page = Page.builder()
+                .url(request.url())
+                .summary(content.toString())
+                .user(currentUser)
+                .subject(subject)
+                .importance(0)
+                .build();
+
+        Page savedPage = pageRepository.save(page);
+        return PageResponse.from(savedPage);
     }
 
     public List<PageResponse> readAllBySubjectId(long subjectId) {
