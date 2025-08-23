@@ -33,11 +33,29 @@ public class PageController {
     }
 
     @PostMapping("highlight")
-    @Operation(summary = "요약 페이지 생성", description = "새로운 하이라이트 페이지를 생성합니다. 하이라이트를 요약으로 활용한 페이지를 생성합니다.")
+    @Operation(summary = "하이라이트를 활용한 요약 페이지 생성", description = "새로운 하이라이트 페이지를 생성합니다. 하이라이트를 요약으로 활용한 페이지를 생성합니다.")
     @ApiResponse(responseCode = "201", description = "페이지 생성 성공", useReturnTypeSchema = true)
     public ResponseEntity<PageResponse> createHighlightPage(@Valid @RequestBody HighlightPageCreateRequest request) {
         PageResponse response = pageService.createHighlightPage(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/search")
+    @Operation(summary = "검색어를 포함한 페이지 검색", description = "ai를 사용하지 않고 사용자가 저장한 페이지의 요약에서 키워드를 포함한 페이지들을 검색합니다. sql like 사용")
+    @ApiResponse(responseCode = "200", description = "검색 성공", useReturnTypeSchema = true)
+    public ResponseEntity<List<PageResponse>> searchPages(
+            @Parameter(description = "검색 키워드", example = "Spring Boot", required = true)
+            @RequestParam String keyword,
+            @Parameter(description = "과목 ID (선택사항)", example = "1")
+            @RequestParam(required = false) Long subjectId) {
+        
+        List<PageResponse> pages;
+        if (subjectId != null) {
+            pages = pageService.searchPagesByKeywordAndSubject(keyword, subjectId);
+        } else {
+            pages = pageService.searchPagesByKeyword(keyword);
+        }
+        return ResponseEntity.ok(pages);
     }
 
     @GetMapping

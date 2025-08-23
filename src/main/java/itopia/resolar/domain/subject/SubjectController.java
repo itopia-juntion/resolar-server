@@ -31,7 +31,7 @@ public class SubjectController {
     }
 
     @GetMapping("search")
-    @Operation(summary = "아티클 검색", description = "키워드를 사용해 유사한 내용의 아티클을 검색합니다.")
+    @Operation(summary = "아티클 검색(미완)", description = "키워드를 사용해 유사한 내용의 아티클을 검색합니다.")
     public ResponseEntity<?> search(
             @RequestParam String keyword,
             @RequestParam long subjectId
@@ -40,8 +40,8 @@ public class SubjectController {
     }
 
     @PostMapping("summary/{subjectId}")
-    @Operation(summary = "탐색된 자료들 정리", description = "탐색한 자료들을 요약, 정리합니다.")
-    public ResponseEntity<?> summarySubject() {
+    @Operation(summary = "탐색된 자료들 정리(미완)", description = "탐색한 자료들을 요약, 정리합니다.")
+    public ResponseEntity<?> summarySubject(@PathVariable long subjectId) {
 //subjectService.createSubject()
         return ResponseEntity.ok(null);
     }

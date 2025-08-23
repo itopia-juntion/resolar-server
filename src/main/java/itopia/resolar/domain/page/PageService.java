@@ -115,4 +115,38 @@ public class PageService {
                 .map(PageResponse::from)
                 .toList();
     }
+
+    public List<PageResponse> searchPagesByKeyword(String keyword) {
+        long currentUserId = SecurityUtil.getCurrentUserId();
+        
+        if (keyword == null || keyword.trim().isEmpty()) {
+            throw new RuntimeException("검색어를 입력해주세요");
+        }
+        
+        return pageRepository.findByUserIdAndSummaryContaining(currentUserId, keyword.trim())
+                .stream()
+                .map(PageResponse::from)
+                .toList();
+    }
+
+    public List<PageResponse> searchPagesByKeywordAndSubject(String keyword, long subjectId) {
+        long currentUserId = SecurityUtil.getCurrentUserId();
+        
+        if (keyword == null || keyword.trim().isEmpty()) {
+            throw new RuntimeException("검색어를 입력해주세요");
+        }
+
+        // 과목 권한 확인
+        Subject subject = subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new RuntimeException("과목을 찾을 수 없습니다"));
+
+        if (!subject.getUser().getId().equals(currentUserId)) {
+            throw new RuntimeException("해당 과목에 접근할 권한이 없습니다");
+        }
+
+        return pageRepository.findBySubjectIdAndUserIdAndSummaryContaining(subjectId, currentUserId, keyword.trim())
+                .stream()
+                .map(PageResponse::from)
+                .toList();
+    }
 }

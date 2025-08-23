@@ -28,8 +28,8 @@ public record HighlightPageCreateRequest(
         @Positive(message = "과목 ID는 양수여야 합니다")
         Long subjectId,
 
-        @Schema(description = "드래그한 하이라이트 목록")
-        @NotBlank(message = "하이라이트 목록은 필수입니다")
+        @Schema(description = "드래그한 하이라이트 목록", example = "[\"Spring Boot는 마이크로서비스 개발에 적합하다\", \"RESTful API 구축이 간단하다\"]")
+        @NotNull(message = "하이라이트 목록은 필수입니다")
         List<String> highlights
 ) {
 }
