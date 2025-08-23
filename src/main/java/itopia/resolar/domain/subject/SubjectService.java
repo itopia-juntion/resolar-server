@@ -48,7 +48,9 @@ public class SubjectService {
             throw new RuntimeException("해당 주제를 찾을 수 없습니다.");
         }
 
-        SearchRequest request = new SearchRequest(keyword, subject.get().getName(), 1);
+        long currentUserId = SecurityUtil.getCurrentUserId();
+
+        SearchRequest request = new SearchRequest(keyword, subject.get().getName(), 1, currentUserId);
         SearchResponse response = aiAnalysisClient.searchPage(request);
         Page page = pageRepository.findById(response.id())
                 .orElseThrow(() -> new RuntimeException("해당 페이지를 찾을 수 없습니다"));

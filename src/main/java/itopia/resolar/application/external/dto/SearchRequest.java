@@ -10,6 +10,9 @@ public record SearchRequest(
         String subjectId,
 
         @JsonProperty("limit")
-        int limit
+        int limit,
+
+        @JsonProperty("userId")
+        long userId
 ) {
 }
