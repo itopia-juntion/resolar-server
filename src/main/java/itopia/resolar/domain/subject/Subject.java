@@ -1,5 +1,6 @@
 package itopia.resolar.domain.subject;
 
+import itopia.resolar.application.common.BaseEntity;
 import itopia.resolar.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Subject {
+public class Subject extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
