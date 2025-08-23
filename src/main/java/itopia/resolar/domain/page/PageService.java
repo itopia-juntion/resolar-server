@@ -5,6 +5,7 @@ import itopia.resolar.application.external.dto.AnalyzeRequest;
 import itopia.resolar.application.external.dto.AnalyzeResponse;
 import itopia.resolar.application.security.SecurityUtil;
 import itopia.resolar.domain.page.dto.HighlightPageCreateRequest;
+import itopia.resolar.domain.page.dto.LargeHighlightPageCreateRequest;
 import itopia.resolar.domain.page.dto.PageCreateRequest;
 import itopia.resolar.domain.page.dto.PageResponse;
 import itopia.resolar.domain.subject.Subject;
@@ -68,6 +69,7 @@ public class PageService {
         }
     }
 
+    @Transactional
     public PageResponse createHighlightPage(HighlightPageCreateRequest request) {
         long currentUserId = SecurityUtil.getCurrentUserId();
 
@@ -97,6 +99,53 @@ public class PageService {
 
         Page savedPage = pageRepository.save(page);
         return PageResponse.from(savedPage);
+    }
+
+    @Transactional
+    public PageResponse createLargeHighlightPage(LargeHighlightPageCreateRequest request) {
+        long currentUserId = SecurityUtil.getCurrentUserId();
+
+        Subject subject = subjectRepository.findById(request.subjectId())
+                .orElseThrow(() -> new RuntimeException("주제를 찾을 수 없습니다"));
+
+        if (!subject.getUser().getId().equals(currentUserId)) {
+            throw new RuntimeException("해당 주제에 접근할 권한이 없습니다");
+        }
+
+        User currentUser = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다"));
+
+        Page page = Page.builder()
+                .url(request.url())
+                .subject(subject)
+                .user(currentUser)
+                .build();
+
+        Page savedPage = pageRepository.save(page);
+
+        StringBuilder content = new StringBuilder();
+        for (String highlight : request.highlights()) {
+            content.append(highlight);
+            content.append("\n");
+        }
+
+        try {
+            AnalyzeRequest analyzeRequest = new AnalyzeRequest(
+                    subject.getName(),
+                    request.title(),
+                    request.url(),
+                    content.toString(),
+                    java.time.LocalDateTime.now().toString(),
+                    savedPage.getId()
+            );
+            AnalyzeResponse aiResponse = aiAnalysisClient.analyzeContent(analyzeRequest);
+
+            savedPage.updatePage(aiResponse.summary(), aiResponse.importance());
+
+            return PageResponse.from(savedPage);
+        } catch (Exception e) {
+            throw new RuntimeException("페이지 생성 중 오류가 발생했습니다: " + e.getMessage());
+        }
     }
 
     public List<PageResponse> readAllBySubjectId(long subjectId) {
