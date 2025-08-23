@@ -13,13 +13,7 @@ public record PageCreateRequest(
         @Schema(description = "페이지 요약", example = "Spring Boot RESTful 웹 서비스 구축 가이드", requiredMode = Schema.RequiredMode.REQUIRED)
         @NotBlank(message = "요약은 필수입니다")
         @Size(max = 500, message = "요약은 500자 이하여야 합니다")
-        String summary,
-        
-        @Schema(description = "중요도 (1-10)", example = "5", requiredMode = Schema.RequiredMode.REQUIRED, minimum = "1", maximum = "10")
-        @NotNull(message = "중요도는 필수입니다")
-        @Min(value = 1, message = "중요도는 1 이상이어야 합니다")
-        @Max(value = 10, message = "중요도는 10 이하여야 합니다")
-        Integer importance,
+        String content,
         
         @Schema(description = "소속 과목 ID", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
         @NotNull(message = "과목 ID는 필수입니다")

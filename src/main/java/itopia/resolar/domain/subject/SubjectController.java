@@ -30,6 +30,12 @@ public class SubjectController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+//    @PostMapping("summary/{subjectId}")
+//    @Operation(summary = "탐색된 자료들 정리", description = "탐색한 자료들을 요약, 정리합니다.")
+//    public ResponseEntity<?> summarySubject() {
+//subjectService.createSubject()
+//    }
+
     @GetMapping
     @Operation(summary = "내 주제 목록 조회", description = "현재 로그인한 사용자의 모든 주제를 조회합니다.")
     @ApiResponse(responseCode = "200", description = "조회 성공", useReturnTypeSchema = true)

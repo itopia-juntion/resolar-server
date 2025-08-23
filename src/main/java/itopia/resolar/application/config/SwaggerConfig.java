@@ -7,7 +7,6 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -37,10 +36,11 @@ public class SwaggerConfig {
                         .bearerFormat("JWT"));
 
         var local = new Server().url("http://localhost:8080");
+        var server = new Server().url("https://37703b8a36c1.ngrok-free.app");
 
         return new OpenAPI()
                 .info(info)
-                .servers(List.of(local))
+                .servers(List.of(local, server))
                 .addSecurityItem(securityRequirement)
                 .components(components);
     }

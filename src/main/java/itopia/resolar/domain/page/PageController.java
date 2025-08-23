@@ -24,11 +24,11 @@ public class PageController {
     private final PageService pageService;
 
     @PostMapping
-    @Operation(summary = "페이지 생성", description = "페이지를 생성합니다. 지정된 주제에 연결됩니다.")
-    @ApiResponse(responseCode = "201", description = "페이지 생성 성공")
-    public ResponseEntity<Void> createPage(@Valid @RequestBody PageCreateRequest request) {
-        // pageService.createPage(request); // TODO: 구현 필요
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    @Operation(summary = "페이지 생성", description = "새로운 페이지를 생성합니다. AI 서버를 통해 내용을 분석하여 요약과 중요도를 자동으로 생성합니다.")
+    @ApiResponse(responseCode = "201", description = "페이지 생성 성공", useReturnTypeSchema = true)
+    public ResponseEntity<PageResponse> createPage(@Valid @RequestBody PageCreateRequest request) {
+        PageResponse response = pageService.createPage(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping

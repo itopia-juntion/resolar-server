@@ -17,7 +17,7 @@ public record PageResponse(
         String summary,
         
         @Schema(description = "중요도", example = "5", minimum = "1", maximum = "10")
-        int importance,
+        double importance,
         
         @Schema(description = "소속 과목 ID", example = "1")
         long subjectId,

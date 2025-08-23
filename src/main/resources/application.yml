@@ -15,3 +15,7 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+
+ai:
+  service:
+    url: https://37703b8a36c1.ngrok-free.app
