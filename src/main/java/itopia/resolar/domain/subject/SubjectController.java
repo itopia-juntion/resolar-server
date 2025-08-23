@@ -9,7 +9,9 @@ import itopia.resolar.domain.subject.dto.SubjectCreateRequest;
 import itopia.resolar.domain.subject.dto.SubjectResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,10 +44,18 @@ public class SubjectController {
     }
 
     @PostMapping("summary/{subjectId}")
-    @Operation(summary = "탐색된 자료들 정리(미완)", description = "탐색한 자료들을 요약, 정리합니다.")
-    public ResponseEntity<?> summarySubject(@PathVariable long subjectId) {
-//subjectService.createSubject()
-        return ResponseEntity.ok(null);
+    @Operation(summary = "탐색된 자료들 정리", description = "탐색한 자료들을 요약하여 PDF로 생성합니다.")
+    @ApiResponse(responseCode = "200", description = "PDF 생성 성공")
+    public ResponseEntity<byte[]> summarySubject(@PathVariable long subjectId) {
+        byte[] pdfBytes = subjectService.summarizeSubject(subjectId);
+        
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "subject-summary-" + subjectId + ".pdf");
+        
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(pdfBytes);
     }
 
     @GetMapping

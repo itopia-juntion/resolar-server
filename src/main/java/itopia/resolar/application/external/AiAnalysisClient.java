@@ -1,9 +1,6 @@
 package itopia.resolar.application.external;
 
-import itopia.resolar.application.external.dto.AnalyzeRequest;
-import itopia.resolar.application.external.dto.AnalyzeResponse;
-import itopia.resolar.application.external.dto.SearchRequest;
-import itopia.resolar.application.external.dto.SearchResponse;
+import itopia.resolar.application.external.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -27,6 +24,34 @@ public class AiAnalysisClient {
                     .body(request)
                     .retrieve()
                     .body(AnalyzeResponse.class);
+        } catch (RestClientException e) {
+            throw new RuntimeException("AI 분석 서비스 호출에 실패했습니다: " + e.getMessage());
+        }
+    }
+
+    public AnalyzeResponse analyzePaperContent(AnalyzeRequest request) {
+        try {
+            return restClient
+                    .post()
+                    .uri("/api/v1/papersearch")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(request)
+                    .retrieve()
+                    .body(AnalyzeResponse.class);
+        } catch (RestClientException e) {
+            throw new RuntimeException("AI 분석 서비스 호출에 실패했습니다: " + e.getMessage());
+        }
+    }
+
+    public SummarizeSubjectResponse summarizeSubject(SummarizeSubjectRequest request) {
+        try {
+            return restClient
+                    .post()
+                    .uri("/api/v1/generate-report")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(request)
+                    .retrieve()
+                    .body(SummarizeSubjectResponse.class);
         } catch (RestClientException e) {
             throw new RuntimeException("AI 분석 서비스 호출에 실패했습니다: " + e.getMessage());
         }

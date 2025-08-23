@@ -3,6 +3,9 @@ package itopia.resolar.domain.subject;
 import itopia.resolar.application.external.AiAnalysisClient;
 import itopia.resolar.application.external.dto.SearchRequest;
 import itopia.resolar.application.external.dto.SearchResponse;
+import itopia.resolar.application.external.dto.SummarizeSubjectRequest;
+import itopia.resolar.application.external.dto.SummarizeSubjectResponse;
+import itopia.resolar.application.pdf.PdfService;
 import itopia.resolar.application.security.SecurityUtil;
 import itopia.resolar.domain.page.Page;
 import itopia.resolar.domain.page.PageRepository;
@@ -23,6 +26,7 @@ public class SubjectService {
     private final PageRepository pageRepository;
     private final UserRepository userRepository;
     private final AiAnalysisClient aiAnalysisClient;
+    private final PdfService pdfService;
 
     public SubjectResponse createSubject(String name) {
         long userId = SecurityUtil.getCurrentUserId();
@@ -40,6 +44,27 @@ public class SubjectService {
                 .id(savedSubject.getId())
                 .name(savedSubject.getName())
                 .build();
+    }
+
+    public byte[] summarizeSubject(long subjectId) {
+        long userId = SecurityUtil.getCurrentUserId();
+        Subject subject = subjectRepository.findByIdAndUserId(subjectId, userId)
+                .orElseThrow(() -> new RuntimeException("해당 주제를 찾을 수 없습니다."));
+
+        List<Page> pages = pageRepository.findAllBySubjectIdAndUserId(subjectId, userId);
+        
+        if (pages.isEmpty()) {
+            throw new RuntimeException("해당 주제에 저장된 페이지가 없습니다.");
+        }
+
+        try {
+            SummarizeSubjectRequest request = new SummarizeSubjectRequest(subject.getName(), userId);
+            SummarizeSubjectResponse response = aiAnalysisClient.summarizeSubject(request);
+            
+            return pdfService.generateSubjectReportPdf(subject.getName(), response);
+        } catch (Exception e) {
+            throw new RuntimeException("주제 요약 PDF 생성 중 오류가 발생했습니다: " + e.getMessage());
+        }
     }
 
     public PageResponse searchByKeyword(String keyword, long subjectId) {
@@ -65,4 +90,5 @@ public class SubjectService {
                 .map(SubjectResponse::from)
                 .toList();
     }
+
 }

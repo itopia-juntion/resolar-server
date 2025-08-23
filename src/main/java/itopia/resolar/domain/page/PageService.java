@@ -140,7 +140,7 @@ public class PageService {
                     savedPage.getId(),
                     currentUserId
             );
-            AnalyzeResponse aiResponse = aiAnalysisClient.analyzeContent(analyzeRequest);
+            AnalyzeResponse aiResponse = aiAnalysisClient.analyzePaperContent(analyzeRequest);
 
             savedPage.updatePage(aiResponse.summary(), aiResponse.importance());
 
