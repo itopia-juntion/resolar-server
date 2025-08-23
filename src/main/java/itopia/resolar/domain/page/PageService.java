@@ -1,6 +1,7 @@
 package itopia.resolar.domain.page;
 
 import itopia.resolar.application.external.AiAnalysisClient;
+import itopia.resolar.application.external.dto.AnalyzeRequest;
 import itopia.resolar.application.external.dto.AnalyzeResponse;
 import itopia.resolar.application.security.SecurityUtil;
 import itopia.resolar.domain.page.dto.PageCreateRequest;
@@ -39,18 +40,26 @@ public class PageService {
         User currentUser = userRepository.findById(currentUserId)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다"));
 
+        Page page = Page.builder()
+                .url(request.url())
+                .subject(subject)
+                .user(currentUser)
+                .build();
+
+        Page savedPage = pageRepository.save(page);
+
         try {
-            AnalyzeResponse aiResponse = aiAnalysisClient.analyzeContent(request.url(), request.content());
+            AnalyzeRequest analyzeRequest = new AnalyzeRequest(
+                    subject.getName(),
+                    request.title(),
+                    request.url(),
+                    request.content(),
+                    java.time.LocalDateTime.now(),
+                    savedPage.getId()
+            );
+            AnalyzeResponse aiResponse = aiAnalysisClient.analyzeContent(analyzeRequest);
 
-            Page page = Page.builder()
-                    .url(request.url())
-                    .summary(aiResponse.summary())
-                    .importance(aiResponse.importance())
-                    .subject(subject)
-                    .user(currentUser)
-                    .build();
-
-            Page savedPage = pageRepository.save(page);
+            savedPage.updatePage(aiResponse.summary(), aiResponse.importance());
 
             return PageResponse.from(savedPage);
         } catch (Exception e) {

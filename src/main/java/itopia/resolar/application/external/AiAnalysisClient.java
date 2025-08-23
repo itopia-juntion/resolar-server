@@ -16,10 +16,8 @@ public class AiAnalysisClient {
 
     private final RestClient restClient;
 
-    public AnalyzeResponse analyzeContent(String url, String content) {
+    public AnalyzeResponse analyzeContent(AnalyzeRequest request) {
         try {
-            AnalyzeRequest request = new AnalyzeRequest(url, content);
-
             return restClient
                     .post()
                     .uri("/api/v1/analyze")
@@ -28,8 +26,24 @@ public class AiAnalysisClient {
                     .retrieve()
                     .body(AnalyzeResponse.class);
         } catch (RestClientException e) {
-            log.error("Failed to analyze content for URL: {}", url, e);
             throw new RuntimeException("AI 분석 서비스 호출에 실패했습니다: " + e.getMessage());
         }
     }
+
+//    public void searchPage(String keyword, long subjectId) {
+//        try {
+//            AnalyzeRequest request = new AnalyzeRequest(url, content);
+//
+//            return restClient
+//                    .post()
+//                    .uri("/api/v1/analyze")
+//                    .contentType(MediaType.APPLICATION_JSON)
+//                    .body(request)
+//                    .retrieve()
+//                    .body(AnalyzeResponse.class);
+//        } catch (RestClientException e) {
+//            log.error("Failed to analyze content for URL: {}", url, e);
+//            throw new RuntimeException("AI 분석 서비스 호출에 실패했습니다: " + e.getMessage());
+//        }
+//    }
 }

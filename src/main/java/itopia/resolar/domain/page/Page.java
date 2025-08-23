@@ -28,4 +28,9 @@ public class Page extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
+    public void updatePage(String summary, double importance) {
+        this.summary = summary;
+        this.importance = importance;
+    }
 }

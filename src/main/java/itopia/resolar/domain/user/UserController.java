@@ -22,7 +22,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/join")
+    @PostMapping("join")
     @Operation(summary = "회원가입", description = "새로운 사용자를 등록합니다.")
     @ApiResponse(responseCode = "200", description = "회원가입 성공", useReturnTypeSchema = true)
     public ResponseEntity<AuthResponse> signup(@Valid @RequestBody SignupRequest request) {
@@ -30,7 +30,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/login")
+    @PostMapping("login")
     @Operation(summary = "로그인", description = "사용자 인증 후 JWT 토큰을 발급합니다.")
     @ApiResponse(responseCode = "200", description = "로그인 성공", useReturnTypeSchema = true)
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request) {

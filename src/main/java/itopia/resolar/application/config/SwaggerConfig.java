@@ -36,7 +36,7 @@ public class SwaggerConfig {
                         .bearerFormat("JWT"));
 
         var local = new Server().url("http://localhost:8080");
-        var server = new Server().url("https://37703b8a36c1.ngrok-free.app");
+        var server = new Server().url("https://c614105eedfe.ngrok-free.app");
 
         return new OpenAPI()
                 .info(info)

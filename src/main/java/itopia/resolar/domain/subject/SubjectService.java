@@ -1,5 +1,6 @@
 package itopia.resolar.domain.subject;
 
+import itopia.resolar.application.external.AiAnalysisClient;
 import itopia.resolar.application.security.SecurityUtil;
 import itopia.resolar.domain.subject.dto.SubjectResponse;
 import itopia.resolar.domain.user.User;
@@ -14,6 +15,7 @@ import java.util.List;
 public class SubjectService {
     private final SubjectRepository subjectRepository;
     private final UserRepository userRepository;
+    private final AiAnalysisClient aiAnalysisClient;
 
     public SubjectResponse createSubject(String name) {
         long userId = SecurityUtil.getCurrentUserId();
@@ -31,6 +33,10 @@ public class SubjectService {
                 .id(savedSubject.getId())
                 .name(savedSubject.getName())
                 .build();
+    }
+
+    public void searchByKeyword(String keyword, long subjectId) {
+
     }
 
     public List<SubjectResponse> readAllByUserId() {
