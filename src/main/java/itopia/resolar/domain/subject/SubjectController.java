@@ -66,7 +66,7 @@ public class SubjectController {
         return ResponseEntity.ok(subjects);
     }
 
-    @DeleteMapping("{subjectId}")
+    @DeleteMapping("{subject}")
     @Operation(summary = "주제 삭제")
     public ResponseEntity<Void> deleteSubject(@PathVariable long subjectId) {
         subjectService.deleteSubject(subjectId);

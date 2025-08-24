@@ -12,6 +12,6 @@ public interface PageRepository extends JpaRepository<Page, Long> {
     @Query("SELECT p FROM Page p WHERE p.user.id = :userId AND p.summary LIKE %:keyword% ORDER BY p.createdAt DESC")
     List<Page> findByUserIdAndSummaryContaining(@Param("userId") long userId, @Param("keyword") String keyword);
     
-    @Query("SELECT p FROM Page p WHERE p.subject.id = :subjectId AND p.user.id = :userId AND p.summary LIKE %:keyword% ORDER BY p.createdAt DESC")
-    List<Page> findBySubjectIdAndUserIdAndSummaryContaining(@Param("subjectId") long subjectId, @Param("userId") long userId, @Param("keyword") String keyword);
+    @Query("SELECT p FROM Page p WHERE p.subject.id = :subject AND p.user.id = :userId AND p.summary LIKE %:keyword% ORDER BY p.createdAt DESC")
+    List<Page> findBySubjectIdAndUserIdAndSummaryContaining(@Param("subject") long subjectId, @Param("userId") long userId, @Param("keyword") String keyword);
 }

@@ -6,8 +6,8 @@ public record SearchRequest(
         @JsonProperty("query")
         String query,
 
-        @JsonProperty("subjectId")
-        String subjectId,
+        @JsonProperty("subject")
+        String subject,
 
         @JsonProperty("limit")
         int limit,
